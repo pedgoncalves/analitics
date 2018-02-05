@@ -1,0 +1,153 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="head">
+		<script type="text/javascript">
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.seriesColors = ['#27aae1', '#88cdef', '#215168', '#0499e0', '#0f6289', '#dae8ef'];
+                this.cfg.grid = {
+                    background: '#f3f5f7',
+                    borderColor: '#e5ebf0',
+                    gridLineColor: '#e5ebf0',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#9fadb5'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    markerOptions: {
+                        shadow: false
+                    }
+                }
+            }
+
+            function skinPie() {
+                this.cfg.seriesColors = ['#dae8ef', '#27aae1', '#33ccff', '#9fadb5'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#eaeaea',
+                    gridLineColor: '#e5ebf0',
+                    shadow: false,
+                    borderWidth: 0
+                };
+                this.cfg.seriesDefaults.shadow = false;
+            }
+        </script>
+		<style type="text/css">
+			.jqplot-target, .jqplot-axis {
+				color: #9fadb5;
+			}
+		</style>		
+	</ui:define>
+
+	<ui:define name="content">
+		
+		<div class="Container100">
+			<div class="ContainerIndent">
+				<div class="EmptyBox20"></div>
+
+				<div class="Container25 Responsive">
+					<div class="ContainerIndent">
+						<p:panel style="min-height: 300px;">
+							<i class="icon-user-2 Fs50 Fleft Wid25 hardblue TexAlCenter"></i>
+							<div class="Fs24 Fright MarTop10 leaden Wid70">
+								<span class="hardblue">
+									<p:outputLabel value="#{dashboardBean.nomeUsuarioLogado}"/>
+								</span>, Welcome
+							</div>
+							<div class="Fs12 Fright leaden Wid70">
+								You have <span class="red">3 unread messages</span> and <span
+									class="red"> 32 tasks</span> !
+							</div>
+							<div class="EmptyBox10"></div>
+							<p:separator styleClass="Wid100"></p:separator>
+							<div class="EmptyBox10"></div>
+							<div class="Fs16 Fright">
+								<a href="#" class="DispInlBlock Fleft Fs16 MarRight20"><i
+									class="icon-briefcase hardblue"> Tasks (32)</i></a> <a href="#"
+									class="DispInlBlock Fleft Fs16 MarRight20"><i
+									class="icon-bell-alt hardblue"> Messages (3)</i></a> <a href="#"
+									class="DispInlBlock Fleft Fs16 MarRight20"><i
+									class="icon-cog-alt hardblue"> Settings</i></a>
+							</div>
+							<div class="EmptyBox10"></div>
+							<p:separator styleClass="Wid100"></p:separator>
+							<div class="EmptyBox10"></div>
+							<i class="icon-key softgray MarRight10 Fs14 Fright"> Your
+								Last Login - 18.08.2014, 18:30</i>
+							<div class="EmptyBox10"></div>
+							<p:separator styleClass="Wid100"></p:separator>
+
+						</p:panel>
+					</div>
+				</div>
+				
+				<div class="Container75 Responsive">
+					<div class="ContainerIndent">
+					<h:form id="form">
+						<p:dataTable id="singleDT" var="atividade" value="#{dashboardBean.listaAtividades}"
+							rows="7" paginator="true" pageLinks="5" reflow="true">
+
+							<p:column headerText="Id" sortBy="#{atividade.tipo}">
+								<h:outputText value="#{atividade.tipo.value}" />
+							</p:column>
+							<p:column headerText="Data" sortBy="#{atividade.data}">							
+								<h:outputText value="#{atividade.data}">															
+	                				<f:convertDateTime pattern="dd/MM/yyyy" />
+	                			</h:outputText>
+							</p:column>
+							<p:column headerText="Distancia" sortBy="#{atividade.distancia}">
+								<h:outputText value="#{atividade.distancia/1000}">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText> Km
+							</p:column>
+							<p:column headerText="Tempo" sortBy="#{atividade.tempo}">												
+								<h:outputText value="#{atividade.tempo}" />
+							</p:column>
+						</p:dataTable>
+					</h:form>
+					</div>
+				</div>
+								
+			</div>
+		</div>
+		
+		
+		<div class="Container100 BorBotLeaden ui-fluid">
+			<div class="ContainerIndent">
+				<div class="EmptyBox10"></div>
+
+				<div class="Container50 Responsive50">
+					<div class="ContainerIndent">
+						<p:panel style="min-height:400px;">
+							<div class="Container100 Responsive Fs20">
+								<i class="icon-chart-bar"></i> Atividades
+							</div>
+							<div class="Container100">
+								<p:chart type="line" model="#{dashboardBean.lineModel}"
+									style="height:300px;margin-top:10px" responsive="true" />
+							</div>
+						</p:panel>
+					</div>
+				</div>
+
+				<div class="Container50 Responsive50">
+					<div class="ContainerIndent">
+					
+					</div>
+				</div>
+
+				<div class="EmptyBox20"></div>
+			</div>
+		</div>		
+		
+	</ui:define>
+
+</ui:composition>
