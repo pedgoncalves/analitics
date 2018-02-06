@@ -5,41 +5,80 @@
 	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
 
 	<ui:define name="head">
+	    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	
 		<script type="text/javascript">
-            function skinChart() {
-                this.cfg.shadow = false;
-                this.cfg.seriesColors = ['#27aae1', '#88cdef', '#215168', '#0499e0', '#0f6289', '#dae8ef'];
-                this.cfg.grid = {
-                    background: '#f3f5f7',
-                    borderColor: '#e5ebf0',
-                    gridLineColor: '#e5ebf0',
-                    shadow: false
-                };
-                this.cfg.axesDefaults = {
-                    rendererOptions: {
-                        textColor: '#9fadb5'
-                    }
-                };
-                this.cfg.seriesDefaults = {
-                    shadow: false,
-                    markerOptions: {
-                        shadow: false
-                    }
-                }
-            }
-
-            function skinPie() {
-                this.cfg.seriesColors = ['#dae8ef', '#27aae1', '#33ccff', '#9fadb5'];
-                this.cfg.grid = {
-                    background: '#ffffff',
-                    borderColor: '#eaeaea',
-                    gridLineColor: '#e5ebf0',
-                    shadow: false,
-                    borderWidth: 0
-                };
-                this.cfg.seriesDefaults.shadow = false;
-            }
+	        // Blue : #3E98D3  |  Red : #EF3F61  |  Green : #2BB673  |  Orange : #F15732
+	        function skinChart() {
+	            this.cfg.shadow = false;
+	            this.cfg.title = '';
+	            this.cfg.seriesColors = ['#3E98D3', '#EF3F61', '#2BB673', '#F15732'];
+	            this.cfg.grid = {
+	                background: '#ffffff',
+	                borderColor: '#ffffff',
+	                gridLineColor: '#F5F5F5',
+	                shadow: false
+	            };
+	            this.cfg.axesDefaults = {
+	                rendererOptions: {
+	                    textColor: '#666F77'
+	                }
+	            };
+	            this.cfg.seriesDefaults = {
+	                shadow: false,
+	                lineWidth: 1,
+	                markerOptions: {
+	                    shadow: false,
+	                    size: 7,
+	                    style: 'circle'
+	                }
+	            }
+	        }
+	        
+	        function skinMeterGauge() {
+                this.cfg.title = '';
+            }	        
+	        
         </script>
+               
+		<script type="text/javascript">
+	      google.charts.load('current', {'packages':['corechart']});
+	      google.charts.setOnLoadCallback(drawChart);
+	
+	      function drawChart() {	
+	        var data = google.visualization.arrayToDataTable([
+	          ['Metas', 'Quantidade', ''],
+	          ['Realizado', #{dashboardBean.metaCorridaAlcancada*0.6}, 'Realizado: #{dashboardBean.totalCorrida}Km (#{(dashboardBean.metaCorridaAlcancada)}%)' ],			  
+			  ['Restante', #{(dashboardBean.metaCorridaRestante)*0.6}, 'Restante: #{dashboardBean.metaCorrida - dashboardBean.totalCorrida}Km (#{(dashboardBean.metaCorridaRestante)}%)'],
+			  ['',  40, ''],
+	        ]);
+			data.setColumnProperty(2, 'role', 'tooltip');
+	
+	        var options = {
+			  backgroundColor: 'transparent',
+	          pieHole: 0.6,
+			  pieStartAngle: 252,
+			  pieSliceText: 'none',
+			  slices: {
+				1: { color: '#e6e6e6' },
+				2: { color: 'transparent' }
+			  },
+			  chartArea: {
+				top: '5',
+			    width: '100%',
+				height: '100%'
+			  },
+			  tooltip: {
+				text: 'percentage'
+			  },
+	          legend: 'none'
+	        };
+	
+	        var chart = new google.visualization.PieChart(document.getElementById('donut_single'));
+	        chart.draw(data, options);
+	      }
+	    </script>               
+        
 		<style type="text/css">
 			.jqplot-target, .jqplot-axis {
 				color: #9fadb5;
@@ -89,7 +128,61 @@
 					</div>
 				</div>
 				
-				<div class="Container75 Responsive">
+				<!-- div class="Container25 Responsive">
+					<div class="ContainerIndent">
+						<p:panel style="min-height:300px;">
+							<div class="Container100 Responsive Fs20">
+								<i class="icon-chart-bar"></i> Metas
+							</div>
+							<div class="Container100">
+								<p:chart type="metergauge" model="#{dashboardBean.meterGaugeModel}"
+									style="height: 267px !important;" responsive="true" />
+							</div>
+						</p:panel>
+					</div>
+				</div -->		
+				
+				<div class="Container25 Responsive">
+					<div class="ContainerIndent">
+						<p:panel style="min-height:300px;">
+							<div class="Container100 Responsive Fs20">
+								<i class="icon-check"></i> Meta - Corrida
+							</div>
+							<div class="Container100 Fcenter">
+								<div id="donut_single" style="top: 40px; position: relative; min-height: 300px;"></div>
+								<div id="percent" style="top: -140px; position: relative; text-align: center;"> 
+									<h:outputText value="#{dashboardBean.metaCorridaAlcancada}%" styleClass="Fs30 hardblue"/>
+								</div>
+								<div id="percent" style="top: -100px; position: relative; text-align: center;"> 
+									<h:outputText value="#{dashboardBean.totalCorrida}Km de #{dashboardBean.metaCorrida}Km" styleClass="Fcenter Fs16"/>
+								</div>
+							</div>
+						</p:panel>
+					</div>
+				</div>	
+				
+				<div class="Container50 Responsive50">
+					<div class="ContainerIndent">
+						<p:panel style="height:300px;">
+							<div class="Container100 Responsive Fs20">
+								<i class="icon-chart-bar"></i> Atividades
+							</div>
+							<div class="Container100">
+								<p:chart type="line" model="#{dashboardBean.lineModel}"
+									style="height:250px; margin-top:10px" responsive="true" />
+							</div>
+						</p:panel>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+		
+		<div class="Container100 BorBotLeaden" style="top: -90px; position: relative;">
+			<div class="ContainerIndent">
+
+				<div class="Container50 Responsive">
 					<div class="ContainerIndent">
 					<h:form id="form">
 						<p:dataTable id="singleDT" var="atividade" value="#{dashboardBean.listaAtividades}"
@@ -115,36 +208,7 @@
 					</h:form>
 					</div>
 				</div>
-								
-			</div>
-		</div>
-		
-		
-		<div class="Container100 BorBotLeaden ui-fluid">
-			<div class="ContainerIndent">
-				<div class="EmptyBox10"></div>
 
-				<div class="Container50 Responsive50">
-					<div class="ContainerIndent">
-						<p:panel style="min-height:400px;">
-							<div class="Container100 Responsive Fs20">
-								<i class="icon-chart-bar"></i> Atividades
-							</div>
-							<div class="Container100">
-								<p:chart type="line" model="#{dashboardBean.lineModel}"
-									style="height:300px;margin-top:10px" responsive="true" />
-							</div>
-						</p:panel>
-					</div>
-				</div>
-
-				<div class="Container50 Responsive50">
-					<div class="ContainerIndent">
-					
-					</div>
-				</div>
-
-				<div class="EmptyBox20"></div>
 			</div>
 		</div>		
 		
