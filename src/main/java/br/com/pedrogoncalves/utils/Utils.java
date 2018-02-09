@@ -18,4 +18,26 @@ public class Utils {
 		return bd.doubleValue();
 	}
 	
+	public static String converterHoraFormatada(Integer tempoSegundos) {		
+		int h = (int) (tempoSegundos/3600);
+		int m = (int) ((tempoSegundos-(h*3600))/60);
+		int s = (int) ((tempoSegundos-(h*3600))-m*60);
+		
+		StringBuilder sBuilder = new StringBuilder();
+		if ( h<10 ) {
+			sBuilder.append("0");			
+		}
+		sBuilder.append(h);
+		sBuilder.append(":");
+		if ( m<10 ) {
+			sBuilder.append("0");			
+		}
+		sBuilder.append(m);
+		sBuilder.append(":");
+		if ( s<10 ) {
+			sBuilder.append("0");			
+		}
+		sBuilder.append(s);		
+		return sBuilder.toString();
+	}
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.pedrogoncalves.IntegracaoStrava;
+import br.com.pedrogoncalves.entidades.AtividadeStrava;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
 

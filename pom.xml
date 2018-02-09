@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>br.com.pedrogoncalves</groupId>
 	<artifactId>RPGraph</artifactId>
 	<packaging>war</packaging>
@@ -10,47 +10,47 @@
 
 	<build>
 		<plugins>
-			<plugin>            
-			  <groupId>org.apache.maven.plugins</groupId>
-			  <artifactId>maven-war-plugin</artifactId>
-			  <configuration>			  
-			    <webXml>WebContent\WEB-INF\web.xml</webXml>
-				<webResources>
-	            	<resource>	              
-	              		<directory>WebContent</directory>
-	            	</resource>
-	          </webResources>			            
-			  </configuration>
-			</plugin>		
-					
 			<plugin>
-			    <groupId>org.apache.tomcat.maven</groupId>
-			    <artifactId>tomcat7-maven-plugin</artifactId>
-			    <version>2.2</version>
-			    <configuration>
-			        <url>http://localhost:8080/manager/text</url>
-			        <server>Tomcat8</server>
-			        <username>admin</username>
-			        <password>admin</password>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webXml>WebContent\WEB-INF\web.xml</webXml>
+					<webResources>
+						<resource>
+							<directory>WebContent</directory>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>http://localhost:8080/manager/text</url>
+					<server>Tomcat8</server>
+					<username>admin</username>
+					<password>admin</password>
 					<path>/RPGraph</path>
-			    </configuration>
-			</plugin>				
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
-	<dependencies>	
+	<dependencies>
 		<dependency>
 			<groupId>br.com.pedrogoncalves</groupId>
 			<artifactId>IntegracaoStrava</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-			
+
 		<dependency>
 			<groupId>br.com.pedrogoncalves</groupId>
 			<artifactId>IntegracaoStrava</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>	
-		
+		</dependency>
+
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
@@ -58,9 +58,27 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>org.glassfish</groupId>
-		    <artifactId>javax.faces</artifactId>
-		    <version>2.2.8</version>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.faces</artifactId>
+			<version>2.2.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.maps</groupId>
+			<artifactId>google-maps-services</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-nop</artifactId>
+			<version>1.7.25</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>3.9.1</version>
 		</dependency>
 
 	</dependencies>
