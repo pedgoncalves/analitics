@@ -6,39 +6,65 @@
 
 	<ui:define name="head">
 	    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	    <script type="text/javascript" src="js/zingchart.min.js"></script>
 	
 		<script type="text/javascript">
-	        // Blue : #3E98D3  |  Red : #EF3F61  |  Green : #2BB673  |  Orange : #F15732
-	        function skinChart() {
-	            this.cfg.shadow = false;
-	            this.cfg.title = '';
-	            this.cfg.seriesColors = ['#3E98D3', '#EF3F61', '#2BB673', '#F15732'];
-	            this.cfg.grid = {
-	                background: '#ffffff',
-	                borderColor: '#ffffff',
-	                gridLineColor: '#F5F5F5',
-	                shadow: false
-	            };
-	            this.cfg.axesDefaults = {
-	                rendererOptions: {
-	                    textColor: '#666F77'
-	                }
-	            };
-	            this.cfg.seriesDefaults = {
-	                shadow: false,
-	                lineWidth: 1,
-	                markerOptions: {
-	                    shadow: false,
-	                    size: 7,
-	                    style: 'circle'
-	                }
-	            }
-	        }
-	             
-	        
-        </script>
-               
-		<script type="text/javascript">
+			function skinChartDefault() {
+			    this.cfg.shadow = false;
+			    this.cfg.title = '';
+			    this.cfg.seriesColors = ['#3E98D3', '#EF3F61', '#2BB673', '#c1a2a2'];
+			    this.cfg.grid = {
+			        background: '#ffffff',
+			        borderColor: '#ffffff',
+			        gridLineColor: '#F5F5F5',
+			        shadow: false
+			    };
+			}    
+			
+			function skinChartStep() {	    	
+				this.cfg.seriesDefaults = {
+                    lineWidth: 1,
+                    step: true
+			    };
+				this.cfg.axesDefaults = {
+			        labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+			    };
+			    this.cfg.grid = {
+			        background: '#ffffff',
+			        borderColor: '#ffffff',
+			        gridLineColor: '#F5F5F5',
+			        shadow: false
+			    };
+			} 
+			
+			function skinChartBar() {
+			    this.cfg.shadow = false;
+			    this.cfg.title = '';
+			    this.cfg.seriesColors = ['#3E98D3', '#EF3F61', '#2BB673', '#c1a2a2'];
+			    this.cfg.grid = {
+			        background: '#ffffff',
+			        borderColor: '#ffffff',
+			        gridLineColor: '#F5F5F5',
+			        shadow: false
+			    }
+			}  
+			
+			function skinChartBubble() {
+			    this.cfg.shadow = false;
+			    this.cfg.title = '';
+			    this.cfg.seriesColors = ['#3E98D3', '#EF3F61', '#2BB673', '#c1a2a2'];
+			    this.cfg.grid = {
+			        background: '#ffffff',
+			        borderColor: '#ffffff',
+			        gridLineColor: '#F5F5F5',
+			        shadow: false
+			    };
+			    this.cfg.seriesDefaults = {
+	                renderer: $.jqplot.BubbleRenderer,
+			        pointLabels: { show: true }
+			    }
+			}  
+			
 	      google.charts.load('current', {'packages':['corechart']});
 	      google.charts.setOnLoadCallback(drawChart);
 	
@@ -124,21 +150,59 @@
 		    };
 
 		   chart.draw(dataTable, options);
-	   }
-		</script>
+		   }
+		</script>	
         
 		<style type="text/css">
 			.jqplot-target, .jqplot-axis {
 				color: #9fadb5;
+			}		
+			.ui-panel {
+				margin-top: 20px
 			}
-		</style>		
+		</style>
+				
 	</ui:define>
 
 	<ui:define name="content">
-		
+	
 		<div class="Container100">
 			<div class="ContainerIndent">
 				<div class="EmptyBox20"></div>
+				
+				
+				
+				<div class="Container100 Responsive">
+					<div class="ContainerIndent">							
+						<p:panel>
+							<h:form>
+								<p:messages showDetail="true" autoUpdate="true" closable="true" />
+							
+								<p:panelGrid columns="5" style="margin-bottom:10px"	layout="grid" styleClass="ui-panelgrid-blank">
+									<p:outputLabel for="ano" value="Ano:" />
+									<p:selectOneMenu id="ano" value="#{dashboardBean.anoSelecionado}">
+										<f:selectItem itemLabel="2018" itemValue="2018" />
+										<f:selectItem itemLabel="2017" itemValue="2017" />
+										<f:selectItem itemLabel="2016" itemValue="2016" />
+									</p:selectOneMenu>
+									
+									<p:outputLabel for="tipo" value="Tipo Atividade:" />
+									<p:selectOneMenu id="tipo" value="#{dashboardBean.tipoSelecionado}">
+										<f:selectItems value="#{dashboardBean.tiposStrava}"
+							                   var="tipo"
+							                   itemValue="#{tipo}"
+							                   itemLabel="#{tipo.value}" />
+									</p:selectOneMenu>	
+										
+									<p:commandButton value="Filtrar" icon="fa fa-check Fs16 white" actionListener="#{dashboardBean.filtrar}" ajax="false"/>
+								</p:panelGrid>
+							</h:form>
+						</p:panel>					
+					</div>			
+				</div>	
+				
+				
+							
 
 				<div class="Container25 Responsive">
 					<div class="ContainerIndent">
@@ -184,28 +248,9 @@
 				
 				<div class="Container25 Responsive">
 					<div class="ContainerIndent">
-						<p:panel style="min-height:300px;">
-							<div class="Container100 Responsive Fs20">
-								<i class="icon-check"></i> Meta - Corrida
-							</div>
-							<div class="Container100 Fcenter">
-								<div id="donut_single" style="top: 40px; position: relative; min-height: 300px;"></div>
-								<div id="percent" style="top: -140px; position: relative; text-align: center;"> 
-									<h:outputText value="#{dashboardBean.metaCorridaAlcancada}%" styleClass="Fs30 hardblue"/>
-								</div>
-								<div id="percent" style="top: -100px; position: relative; text-align: center;"> 
-									<h:outputText value="#{dashboardBean.totalCorrida}Km de #{dashboardBean.metaCorrida}Km" styleClass="Fcenter Fs16"/>
-								</div>
-							</div>
-						</p:panel>
-					</div>
-				</div>	
-				
-				<div class="Container50 Responsive50">
-					<div class="ContainerIndent">
 						<p:panel style="height:300px;">
 							<div class="Container100 Responsive Fs20">
-								<i class="icon-chart-bar"></i> Atividades
+								<i class="icon-chart-bar"></i> Atividades/Dia
 							</div>
 							<div class="Container100">
 								<p:chart type="line" model="#{dashboardBean.lineModel}"
@@ -215,13 +260,119 @@
 					</div>
 				</div>
 				
-			</div>
-		</div>
-		
-		
-		<div class="Container100 BorBotLeaden" style="top: -90px; position: relative;">
-			<div class="ContainerIndent">
-			
+				<div class="Container25 Responsive">
+					<div class="ContainerIndent">
+						<p:panel style="height:300px;">
+							<div class="Container100 Responsive Fs20">
+								<i class="icon-chart-bar"></i> Km Percorridos/Mês
+							</div>
+							<div class="Container100">
+								<p:chart type="bar" model="#{dashboardBean.monthGraph}"
+									style="height:250px; margin-top:10px" responsive="true" />
+							</div>
+						</p:panel>
+					</div>
+				</div>
+				
+				<div class="Container25 Responsive">
+					<div class="ContainerIndent">
+						<p:panel style="height:300px;">
+							<div class="Container100 Responsive Fs20">
+								<i class="icon-chart-bar"></i> Atividades/Mês
+							</div>
+							<div class="Container100">
+								<p:chart type="bar" model="#{dashboardBean.quantidadeMesGraph}"
+									style="height:250px; margin-top:10px" responsive="true" />
+							</div>
+						</p:panel>
+					</div>
+				</div>		
+				
+				<div class="Container25 Responsive">
+					<div class="ContainerIndent">
+						<p:panel style="height:300px;">
+							<div class="Container100 Responsive Fs20">
+								<i class="icon-chart-bar"></i> Atividades/Mês Bubble
+							</div>
+							<div class="Container100">
+								<p:chart type="bubble" model="#{dashboardBean.quantidadeMesBubble}"
+									style="height:250px; margin-top:10px" responsive="true" />
+							</div>
+						</p:panel>
+					</div>
+				</div>	
+				
+				<div class="Container25 Responsive">
+					<div class="ContainerIndent">
+						<p:panel style="height:300px;">
+							<div class="Container100 Responsive Fs20">
+								<i class="icon-chart-bar"></i> Dia da Semana
+							</div>
+							<div class="Container100">
+								<p:chart type="line" model="#{dashboardBean.semanaGraph}"
+									style="height:250px; margin-top:10px" responsive="true" />
+							</div>
+						</p:panel>
+					</div>
+				</div>
+				
+
+				<div class="Container25 Responsive">
+					<div class="ContainerIndent">
+						<p:panel style="height:300px;">
+							<div class="Container100 Responsive Fs20">
+								<i class="icon-chart-bar"></i> Tempo/Mês
+							</div>
+							<div class="Container100">
+								<p:chart type="bar" model="#{dashboardBean.tempoGraph}"
+									style="height:250px; margin-top:10px" responsive="true" />
+							</div>
+						</p:panel>
+					</div>
+				</div>				
+				
+				<div class="Container50 Responsive">
+					<div class="ContainerIndent">
+						<p:panel style="height:300px;">
+							<div class="Container100 Responsive Fs20">
+								<i class="icon-chart-bar"></i> Acumulado/Mês
+							</div>
+							<div class="Container100">
+								<p:chart type="line" model="#{dashboardBean.acumuladoModel}"
+									style="height:250px; margin-top:10px" responsive="true" />
+							</div>
+						</p:panel>
+					</div>
+				</div>			
+				
+				<div class="Container25 Responsive">
+					<div class="ContainerIndent">
+						<p:panel style="height:300px;">
+							<div class="Container100 Responsive Fs20">
+								<i class="icon-chart-bar"></i> Ritmo Médio/Mês
+							</div>
+							<div class="Container100">
+								<p:chart type="line" model="#{dashboardBean.ritmoMesGraph}"
+									style="height:250px; margin-top:10px" responsive="true" />
+							</div>
+						</p:panel>
+					</div>
+				</div>					
+
+				<div class="Container25 Responsive">
+					<div class="ContainerIndent">
+						<p:panel style="height:300px;">
+							<div class="Container100 Responsive Fs20">
+								<i class="icon-chart-bar"></i> Calorias/Mês
+							</div>
+							<div class="Container100">
+								<p:chart type="line" model="#{dashboardBean.caloriasMesGraph}"
+									style="height:250px; margin-top:10px" responsive="true" />
+							</div>
+						</p:panel>
+					</div>
+				</div>		
+
 				<div class="Container50 Responsive">
 					<div class="ContainerIndent">
 						<p:panel style="min-height:500px;">
@@ -233,7 +384,8 @@
 							</div>
 						</p:panel>
 					</div>
-				</div>	
+				</div>
+					
 
 				<div class="Container50 Responsive">
 					<div class="ContainerIndent">
@@ -242,47 +394,48 @@
 								<i class="icon-check"></i> Calendário de Atividades
 							</div>
 							<div class="Container100 Fcenter">
-								    <div id="calendar_basic" style="width: 100%; height: 490px;"></div>
+								    <div id="calendar_basic" style="width: 100%; height: 490px;"/>
 							</div>
 						</p:panel>
 					</div>
-				</div>					
-
-			</div>
-		</div>
-
-		<div class="Container100 BorBotLeaden" style="top: -90px; position: relative;">
-			<div class="ContainerIndent">		
-		
-			<div class="Container50 Responsive">
-					<div class="ContainerIndent">
-					<h:form id="form">
-						<p:dataTable id="singleDT" var="atividade" value="#{dashboardBean.listaAtividades}"
-							rows="7" paginator="true" pageLinks="5" reflow="true">
-
-							<p:column headerText="Id" sortBy="#{atividade.tipo}">
-								<h:outputText value="#{atividade.tipo.value}" />
-							</p:column>
-							<p:column headerText="Data" sortBy="#{atividade.data}">							
-								<h:outputText value="#{atividade.data}">															
-	                				<f:convertDateTime pattern="dd/MM/yyyy" />
-	                			</h:outputText>
-							</p:column>
-							<p:column headerText="Distancia" sortBy="#{atividade.distancia}">
-								<h:outputText value="#{atividade.distancia/1000}">
-									<f:convertNumber pattern="#0.00" />
-								</h:outputText> Km
-							</p:column>
-							<p:column headerText="Tempo" sortBy="#{atividade.tempo}">												
-								<h:outputText value="#{atividade.tempo}" />
-							</p:column>
-						</p:dataTable>
-					</h:form>
-					</div>
 				</div>
-
+				
+				<div class="Container100 BorBotLeaden" style="top: -90px; position: relative;">
+					<div class="ContainerIndent">		
+				
+					<div class="Container50 Responsive">
+							<div class="ContainerIndent">
+							<h:form id="form">
+								<p:dataTable id="singleDT" var="atividade" value="#{dashboardBean.listaAtividades}"
+									rows="7" paginator="true" pageLinks="5" reflow="true">
+		
+									<p:column headerText="Id" sortBy="#{atividade.tipo}">
+										<h:outputText value="#{atividade.tipo.value}" />
+									</p:column>
+									<p:column headerText="Data" sortBy="#{atividade.data}">							
+										<h:outputText value="#{atividade.data}">															
+			                				<f:convertDateTime pattern="dd/MM/yyyy" />
+			                			</h:outputText>
+									</p:column>
+									<p:column headerText="Distancia" sortBy="#{atividade.distancia}">
+										<h:outputText value="#{atividade.distancia/1000}">
+											<f:convertNumber pattern="#0.00" />
+										</h:outputText> Km
+									</p:column>
+									<p:column headerText="Tempo" sortBy="#{atividade.tempo}">												
+										<h:outputText value="#{atividade.tempo}" />
+									</p:column>
+								</p:dataTable>
+							</h:form>
+							</div>
+						</div>
+		
+					</div>
+				</div>	
+				
 			</div>
-		</div>		
+			
+		</div>
 	</ui:define>
 
 </ui:composition>

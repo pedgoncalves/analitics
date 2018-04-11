@@ -17,6 +17,7 @@ public class AtividadeStrava {
 	private Float calorias;
 	private Float lat;
 	private Float lng;
+	private Float cadencia;
 	
 	public AtividadeStrava(StravaActivity activity) {
 		this.id = activity.getId();
@@ -26,7 +27,9 @@ public class AtividadeStrava {
 		this.tempoSegundos = activity.getMovingTime();
 		this.tempo = Utils.converterHoraFormatada(tempoSegundos);
 		this.tipo = activity.getType();
-		this.calorias = activity.getCalories();
+		
+		this.calorias = activity.getCalories();		
+		this.cadencia = activity.getAverageCadence();
 		
 		this.lat = activity.getStartLatitude();
 		this.lng = activity.getStartLongitude();
@@ -111,7 +114,7 @@ public class AtividadeStrava {
 		this.tipo = tipo;
 	}
 
-	public float getCalorias() {
+	public Float getCalorias() {
 		return calorias;
 	}
 
@@ -124,5 +127,15 @@ public class AtividadeStrava {
 		return Utils.arredondar(lat)+","+Utils.arredondar(lng);
 	}
 
-	
+	public Float getCadencia() {
+		return cadencia;
+	}
+
+	public void setCadencia(Float cadencia) {
+		this.cadencia = cadencia;
+	}
+
+	public void setCalorias(Float calorias) {
+		this.calorias = calorias;
+	}	
 }

@@ -61,10 +61,8 @@ public class StravaUtils {
 	
 
 	/**
-	 * Busca todas as atividades do usuário logado
-	 * Pode demorar caso o usuário possua muitas atividades
+	 * Busca todas as atividades do usuário logado no ano informado
 	 * 
-	 * UTILZAR COM CUIDADO
 	 * @return Lista de Atividades no Strava do Usuário Logado
 	 */
 	public List<AtividadeStrava> buscarAtividades(int ano) {		
